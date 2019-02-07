@@ -13,13 +13,12 @@ object Main {
 
     if (args.length == 0) {
       println(usage)
-      System.exit(-1)
+      throw new IllegalArgumentException("You have to specify one Integer Argument")
     }
 
     if (args.length > 1) {
-      println("You must specify only one Integer Argument greater than 0, to calculate the MANHATTAN_DISTANCE between it and the starting central number 1 of the spiral")
       println(usage)
-      System.exit(-1)
+      throw new IllegalArgumentException("You can not specify more than one Integer Argument")
     }
 
     val arglist = args.toList
@@ -28,9 +27,8 @@ object Main {
       arglist.head.toInt
     }
     catch {
-      case e: java.lang.NumberFormatException => { println("The specified Argument '" + arglist.head + "' must be an Integer > 0 .")
-                                                    println(usage)
-                                                    System.exit(-1)
+      case _: java.lang.NumberFormatException => { println(usage)
+                              throw new java.lang.NumberFormatException("The specified Argument '" + arglist.head + "' must be an Integer")
                                                   }
     }
 

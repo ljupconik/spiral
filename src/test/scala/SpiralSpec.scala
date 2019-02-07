@@ -3,12 +3,23 @@ import org.scalatest.{FlatSpec, Matchers}
 
 class SpiralSpec extends FlatSpec with Matchers {
 
+  "The value 368078" should
+    "have a distance of 371 between it and the cell 1" in {
+    manhattan_distance(368078) shouldBe 371
+  }
+
   "The value 1024" should
     "have a distance of 31 between it and the cell 1" in {
     manhattan_distance(1024) shouldBe 31
   }
 
-  "when calculating the manhattan-distance with a nonpositive number, it" should "fail" in {
+  "The value 12" should
+    "have a distance of 3 between it and the cell 1" in {
+    manhattan_distance(12) shouldBe 3
+  }
+
+
+  "when calculating the manhattan-distance with a nonpositive Integer, it" should "fail" in {
     the [IllegalArgumentException] thrownBy {
       val number = 0
       manhattan_distance(number)
