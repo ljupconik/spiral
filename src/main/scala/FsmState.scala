@@ -3,7 +3,7 @@ abstract class FsmState[T <: Enumeration](val state: T)
 
 object PointState extends Enumeration{
   type State = Value
-  val RightEdge, UpperEdge, LeftEdge, LowerEdge , LowerRightCorner, UpperRightCorner, UpperLeftCorner, LowerLeftCorner   = Value
+  val LowerRightCorner, RightEdge, UpperRightCorner, UpperEdge , UpperLeftCorner, LeftEdge, LowerLeftCorner, LowerEdge   = Value
 }
 
 
