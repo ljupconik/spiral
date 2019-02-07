@@ -1,4 +1,4 @@
-import CalcUtils.manhattan_distance
+import CalcUtils.{manhattan_distance, manhattan_dist_2_points}
 import org.scalatest.{FlatSpec, Matchers}
 
 class SpiralSpec extends FlatSpec with Matchers {
@@ -16,6 +16,16 @@ class SpiralSpec extends FlatSpec with Matchers {
   "The value 12" should
     "have a distance of 3 between it and the cell 1" in {
     manhattan_distance(12) shouldBe 3
+  }
+
+  "The point Point(1,-1)" should
+    "have a distance of 2 between it and the center Point(0,0)" in {
+    manhattan_dist_2_points(Point(1,-1)) shouldBe 2
+  }
+
+  "The point Point(1,-1)" should
+    "have a distance of 2 between it and the Point(-1,0)" in {
+    manhattan_dist_2_points(Point(1,-1), Point(-1,0)) shouldBe 3
   }
 
 

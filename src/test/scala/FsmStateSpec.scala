@@ -1,31 +1,31 @@
-
+import CalcUtils.manhattan_dist_2_points
 import org.scalatest.{FlatSpec, Matchers}
 
 import scala.annotation.tailrec
 
-class ListSpec extends FlatSpec with Matchers {
+class FsmStateSpec extends FlatSpec with Matchers {
 
-  def manhattan_distance_list(number:Int ): List[(Int,(PointWithState,Int))] = {
+  def manhattan_distance_seq(number:Int ): Seq[(Int,(PointWithState,Int))] = {
     require(number > 0, s"The number $number specified as an Argument must be an Integer > 0" )
     @tailrec
-    def loop(p_s:PointWithState , counter:Int, lst: List[(Int,(PointWithState,Int))]): List[(Int,(PointWithState,Int))] =
+    def loop(p_s:PointWithState , counter:Int, seq: Seq[(Int,(PointWithState,Int))]): Seq[(Int,(PointWithState,Int))] =
       p_s match {
-        case PointWithState(Point(x,y),z:PointState.State) if (counter == number) => lst
+        case PointWithState(Point(x,y),z:PointState.State) if (counter == number) => seq
         case m:PointWithState =>
-          val nextPointWithSatate = PointWithState.move(m)
+          val nextPointWithState = PointWithState.move(m)
           val next_counter = counter + 1
-          val manhattan_distance = Math.abs(nextPointWithSatate.point.x) + Math.abs(nextPointWithSatate.point.y)
-          loop(nextPointWithSatate, next_counter,(next_counter,(nextPointWithSatate, manhattan_distance)) :: lst)
+          val manhattan_distance_from_center = manhattan_dist_2_points(nextPointWithState.point)
+          loop(nextPointWithState, next_counter, seq :+ (next_counter,(nextPointWithState,manhattan_distance_from_center)))
       }
-    loop(PointWithState(Point(0,0), PointState.LowerRightCorner) , 1, List((1,(PointWithState(Point(0,0), PointState.LowerRightCorner), 0))) )
+    loop(PointWithState(Point(0,0), PointState.LowerRightCorner) , 1, Seq((1,(PointWithState(Point(0,0), PointState.LowerRightCorner), 0))) )
   }
 
   "The value 28" should
-    "produce a list with the following sequence" in {
+    "produce a list with the following sequence with elements (number,(PointWithState, mahattan-distance))" in {
 
-    val gen_list = manhattan_distance_list(28).reverse
+    val gen_seq = manhattan_distance_seq(28)
 
-    gen_list shouldEqual List((1,(PointWithState(Point(0,0),PointState.LowerRightCorner),0)),
+    gen_seq  shouldEqual  Seq((1,(PointWithState(Point(0,0),PointState.LowerRightCorner),0)),
                               (2,(PointWithState(Point(1,0),PointState.RightEdge),1)),
                               (3,(PointWithState(Point(1,1),PointState.UpperRightCorner),2)),
                               (4,(PointWithState(Point(0,1),PointState.UpperEdge),1)),
@@ -53,6 +53,8 @@ class ListSpec extends FlatSpec with Matchers {
                               (26,(PointWithState(Point(3,-2),PointState.RightEdge),5)),
                               (27,(PointWithState(Point(3,-1),PointState.RightEdge),4)),
                               (28,(PointWithState(Point(3,0),PointState.RightEdge),3)))
+
+    //println(gen_seq.toMap)
   }
 
 }
