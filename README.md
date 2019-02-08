@@ -4,13 +4,13 @@
 
 Fill a two-dimensional NxN grid with NxN numbers (N is odd and the numbers are monotone increasing). 
 Start in the middle/center  and walk counter-clockwise to the outside. The middle square starts with 1.
-
+```
 17  16  15  14  13  .
 18   5   4   3  12  .
 19   6   1   2  11  .
 20   7   8   9  10  27
 21  22  23  24  25  26
-
+```
 Now given a location (one of the cell-values), calculate the Manhattan-Distance to the center (how many steps are needed to get to the center with coordinates Point(0,0)) 
 
 ## App Requirement
@@ -42,7 +42,7 @@ The Manhattan distance between 368078 and 1 = 371
 ## How it works
 
 The program uses a Finite State Machine , which has the folowing sequence of states :
-
+```
 LowerRightCorner -> RightEdge ->  UpperRightCorner ->  UpperEdge  -> UpperLeftCorner -> LeftEdge -> LowerLeftCorner -> LowerEdge 
      ^                                                                                                                     |
      |											                                   |
@@ -53,7 +53,7 @@ LowerRightCorner -> RightEdge ->  UpperRightCorner ->  UpperEdge  -> UpperLeftCo
      9              10,11,12            13               14,15,16        17             18,19,20         21           22,23,24
 
     25              26,27,...
-
+```
 
 which is done using the FsmState abstract class , PointState  which is a subtype of Enumeration,  and the 2 domain model case classes 
 Point and PointWithState as a subtype of FsmState.  PointWithState has a companion object that defines the FSM sequence logic.
@@ -73,7 +73,7 @@ The method print_grid ensures the proper alignment and prints the whole NxN grid
 
 
 ## Testing
-### Running the tests111
+### Running the tests
 Run the test suite to verify correct behaviour.  From the command line:
 ```
 % sbt test
