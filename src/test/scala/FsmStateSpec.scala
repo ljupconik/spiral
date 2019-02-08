@@ -90,8 +90,8 @@ class FsmStateSpec extends FlatSpec with Matchers {
       yield Point(i,j)
     }.toList
 
-
-  def print_grid(list_points:List[Point] , counter:Int):List[Point] =
+  @tailrec
+  private def print_grid(list_points:List[Point] , counter:Int):List[Point] =
     list_points match {
       case Nil => Nil
 
