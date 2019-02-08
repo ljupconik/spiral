@@ -5,12 +5,26 @@ import scala.annotation.tailrec
 
 class FsmStateSpec extends FlatSpec with Matchers {
 
-  def manhattan_distance_seq(number:Int ): Seq[(Int,(PointWithState,Int))] = {
+  def manhattan_distance_seq(number:Int , print_round: Boolean = false): Seq[(Int,(PointWithState,Int))] = {
+
     require(number > 0, s"The number $number specified as an Argument must be an Integer > 0" )
+
+    // Find the number that will end the materialization of the sequence if we want to print the grid
+    val number_to_use =
+      if (print_round)
+      {
+        val ceil_sqrt_N = Math.ceil(Math.sqrt(number)).toInt
+
+        (if (Math.sqrt(number).isValidInt) number
+        else if (ceil_sqrt_N % 2 == 0) Math.pow(ceil_sqrt_N + 1 , 2)
+        else Math.pow(ceil_sqrt_N , 2)).toInt
+      }
+      else number
+
     @tailrec
     def loop(p_s:PointWithState , counter:Int, seq: Seq[(Int,(PointWithState,Int))]): Seq[(Int,(PointWithState,Int))] =
       p_s match {
-        case PointWithState(Point(x,y),z:PointState.State) if (counter == number) => seq
+        case PointWithState(Point(x,y),z:PointState.State) if (counter == number_to_use) => seq
         case m:PointWithState =>
           val nextPointWithState = PointWithState.move(m)
           val next_counter = counter + 1
@@ -54,7 +68,44 @@ class FsmStateSpec extends FlatSpec with Matchers {
                               (27,(PointWithState(Point(3,-1),PointState.RightEdge),4)),
                               (28,(PointWithState(Point(3,0),PointState.RightEdge),3)))
 
-    //println(gen_seq.toMap)
   }
+
+  println()
+  println("-------------------")
+  println("Printing the grid :")
+  println("-------------------")
+
+  val grid_map : Map[Point,Int] = manhattan_distance_seq(28 , print_round = true).map(elem => (elem._2._1.point , elem._1)).toMap
+  val max_number = grid_map.size
+  val pad_to = max_number.toString.length + 3
+  val N = Math.sqrt(max_number).toInt
+  val max_coordiate_value =  N / 2
+
+  val list_points: List[Point] =
+    {
+      for {
+      j <- max_coordiate_value to -max_coordiate_value by -1
+      i <- -max_coordiate_value to max_coordiate_value
+          }
+      yield Point(i,j)
+    }.toList
+
+
+  def print_grid(list_points:List[Point] , counter:Int):List[Point] =
+    list_points match {
+      case Nil => Nil
+
+      case head::tail if counter == N =>
+        println(grid_map(head).toString)
+        print_grid(tail , 1)
+
+      case head::tail  =>
+        print(grid_map(head).toString.padTo(pad_to, ' '))
+        print_grid(tail , counter + 1)
+    }
+
+  println()
+  print_grid(list_points,1)
+  println()
 
 }

@@ -23,19 +23,21 @@ The only library dependency outside the standard Scala libraries is ScalaTest 3.
 
 Clone this repository in a fresh directory:
 ```
-% git clone git@bitbucket.org:ljupconik/spiral.git
+% git clone https://github.com/ljupconik/spiral.git
 % cd spiral
 ```
 Compile the project with the following command:
 ```
 % sbt clean compile
 ```
-
+Then run it by specifying the positive Integer Number from the spiral as an Argument,
+to calculate the Manhattan-Distance from it to the center
+```
 % sbt "run 368078"
 -- Output:
 
 The Manhattan distance between 368078 and 1 = 371
-
+```
 
 ## How it works
 
@@ -65,6 +67,9 @@ The Main object with its main method also guards against not specifying exactly 
 
 Tests are provided for all the functionality to ensure correctness of the program.
 
+In the FsmStateSpec test suite there is a method - manhattan_distance_seq that is used to verify the correctnes of all Numbers with corresponding Points , PointStates and Manhattan-distances from the center.
+The same method is also utilized to print the grid on the console when passed the argument (print_round = true)
+The method print_grid ensures the proper alignment and prints the whole NxN grid.
 
 
 ## Testing
